@@ -1,16 +1,29 @@
 ---
-- hosts: all
-  become: yes
+- name: Playbook for lab1
+  hosts: node1.example.com
   remote_user: ansible
   tasks:
     - name: Installing httpd
       ansible.builtin.yum:
         name: httpd
         state: latest
+      become: yes
 
     - name: Enable web ports
       firewalld:
-        port: 80/tcp
+        port: "{{ item }}"
         permanent: true
         state: enabled
+      loop:
+        - 80/tcp
+        - 443/tcp
       become: yes
+
+    - name: Welcome to Web Server
+      ansible.builtin.copy:
+        content: "Welcome to my web server"
+        dest: /var/www/html/index.html
+        owner: apache
+        group: apache
+        mode: '0644'
+      become: yes 
