@@ -1,5 +1,5 @@
 ---
-- name: Playbook for lab1
+- name: Playbook for lab1 task 1
   hosts: node1.example.com
   remote_user: ansible
   tasks:
