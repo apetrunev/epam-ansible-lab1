@@ -1,0 +1,35 @@
+---
+- name: Playbook for lab 1 task 2
+  hosts: node1.example.com
+  remote_user: ansible
+  tasks:
+    - name: Disabling web ports
+      firewalld:
+        port: "{{ item }}"
+        permanent: true
+        state: disabled
+      loop:
+        - 80/tcp
+        - 443/tcp
+      become: yes
+
+    - name: Disabling httpd 
+      ansible.builtin.service:
+        name: httpd
+        state: stopped
+        enabled: no
+      ignore_errors: yes
+      become: yes
+
+    - name: Removing httpd package
+      ansible.builtin.yum:
+        name: httpd
+        state: removed
+      ignore_errors: yes
+      become: yes
+
+    - name: Removing welcome html page
+      ansible.builtin.file:
+        path: /var/www/html/index.html
+        state: absent
+      become: yes
