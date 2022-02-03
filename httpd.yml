@@ -9,6 +9,13 @@
         state: latest
       become: yes
 
+    - name: Start httpd service
+      ansible.builtin.service:
+        name: httpd
+        enabled: yes
+        state: started
+      become: yes
+
     - name: Enable web ports
       firewalld:
         port: "{{ item }}"
