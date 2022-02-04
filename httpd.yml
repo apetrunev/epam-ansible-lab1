@@ -16,7 +16,7 @@
         state: started
 
     - name: Enable web ports
-      firewalld:
+      ansible.builtin.firewalld:
         port: "{{ item }}"
         permanent: true
         state: enabled
