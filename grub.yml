@@ -15,16 +15,17 @@
       ansible.builtin.lineinfile:
         path: /etc/default/grub
         state: present
-        regexp: '^(GRUB_CMDLINE_LINUX=.*)(net\.ifnames=0)(.*)'
-        line: '\1net.ifnames=1\3'
+        regexp: '^(GRUB_CMDLINE_LINUX=.*)(net\.ifnames=[0-9]*)(.*)'
+        line: '\1net.ifnames=0\3'
         backrefs: yes
 
     - name: Set biosdevname=0 or 1 to /etc/default/grub
       ansible.builtin.lineinfile:
         path: /etc/default/grub
         state: present
-        regexp: '^(GRUB_CMDLINE_LINUX=.*)(biosdevname=0)(.*)'
-        line: '\1biosdevname=1\3'
+        regexp: '^(GRUB_CMDLINE_LINUX=.*)(biosdevname=[0-9]*)(.*)'
+        line: '\1biosdevname=0\3'
         backrefs: yes
 
-
+    - name: "Generate new grub.cfg"
+      command: grub2-mkconfig -o /boot/grub2/grub.cfg
